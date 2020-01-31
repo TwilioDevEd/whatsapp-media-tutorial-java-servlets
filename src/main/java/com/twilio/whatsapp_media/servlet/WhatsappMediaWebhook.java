@@ -43,31 +43,12 @@ public class WhatsappMediaWebhook extends HttpServlet {
         var body = new JSONObject(IOUtils.toString(request.getReader()));
         int numMedia = body.getInt("NumMedia");
 
-        if (numMedia > 0) {
-            while (numMedia > 0) {
-                numMedia = numMedia - 1;
-
-                var mediaUrl = body.getString(String.format("MediaUrl%d", numMedia));
-                var contentType = body.getString(String.format("MediaContentType%d", numMedia));
-                var fileName = mediaUrl.substring(mediaUrl.lastIndexOf("/") + 1);
-                var fileExtension = FileExtensionForMimeType(contentType);
-                var file = new File(fileName + fileExtension);
-
-                // Download file
-                try {
-                    downloadFile(mediaUrl, file);
-                } catch (URISyntaxException e) {
-                    throw new ServletException(e);
-                }
-            }
-        }
-
         var twimlResponse = new MessagingResponse.Builder();
 
         if (body.getInt("NumMedia") > 0) {
             twimlResponse.message(
                 new Message.Builder()
-                    .body(new Body.Builder("Thanks for the image(s)!").build())
+                    .body(new Body.Builder("Thanks for the image! Here's one for you!").build())
                     .media(new Media.Builder(goodBoyUrl).build())
                     .build()
             );
@@ -75,7 +56,6 @@ public class WhatsappMediaWebhook extends HttpServlet {
             twimlResponse.message(
                 new Message.Builder()
                     .body(new Body.Builder("Send us an image!").build())
-                    .media(new Media.Builder(goodBoyUrl).build())
                     .build()
             );
         }
