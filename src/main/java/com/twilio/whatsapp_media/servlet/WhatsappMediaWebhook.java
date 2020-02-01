@@ -9,8 +9,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.tika.mime.MimeTypeException;
-import org.apache.tika.mime.MimeTypes;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -28,14 +26,6 @@ import java.net.URISyntaxException;
 @WebServlet(urlPatterns = {"/"})
 public class WhatsappMediaWebhook extends HttpServlet {
     private static String goodBoyUrl = "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80";
-
-    String FileExtensionForMimeType(String mimeType) {
-        try {
-            return MimeTypes.getDefaultMimeTypes().forName(mimeType).getExtension();
-        } catch (MimeTypeException e) {
-            return null;
-        }
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -69,14 +59,4 @@ public class WhatsappMediaWebhook extends HttpServlet {
         out.close();
     }
 
-    void downloadFile(String mediaUrl, File file) throws URISyntaxException, IOException {
-        var url = new URI(mediaUrl);
-        var httpclient = HttpClients.custom()
-            .setRedirectStrategy(new LaxRedirectStrategy())
-            .build();
-        var get = new HttpGet(url);
-        var downloadResp = httpclient.execute(get);
-        var source = downloadResp.getEntity().getContent();
-        FileUtils.copyInputStreamToFile(source, file);
-    }
 }
