@@ -74,7 +74,7 @@ public class WhatsappMediaWebhookTest {
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
             "<Response>" +
                 "<Message>" +
-                    "<Body>Thanks for the image(s)!</Body>" +
+                    "<Body>Thanks for the image! Here's one for you!</Body>" +
                     "<Media>https://images.unsplash.com/photo-1518717758536-85ae29035b6d?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80</Media>" +
                 "</Message>" +
             "</Response>");
