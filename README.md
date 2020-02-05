@@ -2,7 +2,7 @@
   <img src="https://static0.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg" alt="Twilio" width="250" />
 </a>
 
-# Receive, Download, and Reply with media in WhatsApp Messages. Powered by Twilio - C#/Asp.NET
+# Receive, Download, and Reply with media in WhatsApp Messages. Powered by Twilio - Java
 Use Twilio to receive WhatsApp media messages. For a step-by-step tutorial see
 the [Twilio docs](https://www.twilio.com/docs/sms/tutorials/send-and-receive-media-messages-whatsapp-java-servlets).
 
@@ -13,20 +13,25 @@ the [Twilio docs](https://www.twilio.com/docs/sms/tutorials/send-and-receive-med
 
 To run the app locally:
 
-1. Clone this repository and open the solution in Visual Studio 2019.
+1. Clone this repository.
 
    ```bash
    git clone git@github.com:TwilioDevEd/whatsapp-media-tutorial-java-servlets.git
    cd whatsapp-media-tutorial-java-servlets
    ```
 
-1. Run the web app.
+2. Build the project and install dependencies
+   ```bash
+   mvn install
+   ```
+
+3. Run the web app.
 
    ```bash
    mvn jetty:run
    ```
 
-1. Expose your application to the wider internet using
+4. Expose your application to the wider internet using
    [ngrok](http://ngrok.com/). This step is important because the
    application won't work as expected if you run it through localhost.
 
@@ -38,7 +43,7 @@ To run the app locally:
    [this blog post](https://www.twilio.com/blog/2015/09/6-awesome-reasons-to-use-ngrok-when-testing-webhooks.html)
    for more details on how to use ngrok.
 
-1. Configure Twilio's Sandbox for WhatsApp to call your webhook URL
+5. Configure Twilio's Sandbox for WhatsApp to call your webhook URL
 
    You will need to configure your [Twilio Sandbox for WhatsApp](https://www.twilio.com/console/sms/whatsapp/sandbox) to call your application (exposed via ngrok) when your Sandbox number receives an incoming message. Your URL will look something like this:
 
@@ -53,7 +58,7 @@ To run the app locally:
 
 1. Send a message with a media attachment to your WhatsApp Sandbox phone number
 
-1. You should see the files downloaded to the base directory of the web app.
+2. You should see the files downloaded to the base directory of the web app.
 
 
 ## Meta

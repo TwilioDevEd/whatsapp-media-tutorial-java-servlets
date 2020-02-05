@@ -1,20 +1,26 @@
 package com.twilio.whatsapp_media.servlet;
 
-import java.io.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.stubbing.OngoingStubbing;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 
 public class WhatsappMediaWebhookTest {
@@ -61,8 +67,6 @@ public class WhatsappMediaWebhookTest {
         when(request.getCharacterEncoding()).thenReturn("UTF-8");
 
         var servlet = Mockito.spy(new WhatsappMediaWebhook());
-        Mockito.doNothing().when(servlet)
-                .downloadFile(Mockito.any(), Mockito.any());
 
         servlet.doPost(request, response);
 
@@ -106,8 +110,6 @@ public class WhatsappMediaWebhookTest {
         when(request.getCharacterEncoding()).thenReturn("UTF-8");
 
         var servlet = Mockito.spy(new WhatsappMediaWebhook());
-        Mockito.doNothing().when(servlet)
-                .downloadFile(Mockito.any(), Mockito.any());
 
         servlet.doPost(request, response);
 
@@ -120,7 +122,6 @@ public class WhatsappMediaWebhookTest {
             "<Response>" +
                 "<Message>" +
                     "<Body>Send us an image!</Body>" +
-                    "<Media>https://images.unsplash.com/photo-1518717758536-85ae29035b6d?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80</Media>" +
                 "</Message>" +
             "</Response>");
     }

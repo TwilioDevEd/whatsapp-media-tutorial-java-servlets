@@ -1,26 +1,21 @@
 package com.twilio.whatsapp_media.servlet;
 
-import com.twilio.twiml.MessagingResponse;
-import com.twilio.twiml.messaging.Body;
-import com.twilio.twiml.messaging.Media;
-import com.twilio.twiml.messaging.Message;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.json.JSONObject;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
+
+import com.twilio.twiml.MessagingResponse;
+import com.twilio.twiml.messaging.Body;
+import com.twilio.twiml.messaging.Media;
+import com.twilio.twiml.messaging.Message;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 
 
 @WebServlet(urlPatterns = {"/"})
@@ -31,7 +26,6 @@ public class WhatsappMediaWebhook extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         var body = new JSONObject(IOUtils.toString(request.getReader()));
-        int numMedia = body.getInt("NumMedia");
 
         var twimlResponse = new MessagingResponse.Builder();
 
