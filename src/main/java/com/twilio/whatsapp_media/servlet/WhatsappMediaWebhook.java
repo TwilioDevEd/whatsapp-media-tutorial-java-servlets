@@ -3,6 +3,8 @@ package com.twilio.whatsapp_media.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +18,6 @@ import com.twilio.twiml.messaging.Media;
 import com.twilio.twiml.messaging.Message;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 
 @WebServlet(urlPatterns = { "/" })
 public class WhatsappMediaWebhook extends HttpServlet {
@@ -27,20 +28,16 @@ public class WhatsappMediaWebhook extends HttpServlet {
             throws ServletException, IOException {
         var body = IOUtils.toString(request.getReader());
         
-        // The request object is in query string format,
-        // so we need to decode it an transform it into a json
+        // The request object is in query string format, so we need to decode it
         final String bodyDecoded = URLDecoder.decode(body, "UTF-8");
-        String[] parts = bodyDecoded.split("&");
-        JSONObject json = new JSONObject();
-        for (String part : parts) {
-            String[] keyVal = part.split("=");
-            if (keyVal.length == 2) {
-                json.put(keyVal[0], keyVal[1]);
-            }
-        }
+        List<String> parts = Arrays.asList(bodyDecoded.split("&"));
+        String[] numMedia = parts.stream()
+            .filter(s -> s.startsWith("NumMedia"))
+            .findFirst()
+            .orElse(null)
+            .split("=");
         var twimlResponse = new MessagingResponse.Builder();
-
-        if (json.getInt("NumMedia") > 0) {
+        if (numMedia[1].equals("1")) {
             twimlResponse.message(
                     new Message.Builder().body(new Body.Builder("Thanks for the image! Here's one for you!").build())
                             .media(new Media.Builder(goodBoyUrl).build()).build());
