@@ -2,9 +2,9 @@
   <img src="https://static0.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg" alt="Twilio" width="250" />
 </a>
 
-# Receive, Download, and Reply with media in WhatsApp Messages. Powered by Twilio - C#/Asp.NET
+# Receive, Download, and Reply with media in WhatsApp Messages. Powered by Twilio - Java
 Use Twilio to receive WhatsApp media messages. For a step-by-step tutorial see
-the [Twilio docs](https://www.twilio.com/docs/sms/tutorials/send-and-receive-media-messages-whatsapp-java-servlets).
+the [Twilio docs](https://www.twilio.com/docs/sms/whatsapp/tutorial/send-and-receive-media-messages-whatsapp-java-servlets).
 
 
 [![Build Status](https://travis-ci.org/TwilioDevEd/whatsapp-media-tutorial-java-servlets.svg?branch=master)](https://travis-ci.org/TwilioDevEd/whatsapp-media-tutorial-java-servlets)
@@ -13,11 +13,16 @@ the [Twilio docs](https://www.twilio.com/docs/sms/tutorials/send-and-receive-med
 
 To run the app locally:
 
-1. Clone this repository and open the solution in Visual Studio 2019.
+1. Clone this repository.
 
    ```bash
    git clone git@github.com:TwilioDevEd/whatsapp-media-tutorial-java-servlets.git
    cd whatsapp-media-tutorial-java-servlets
+   ```
+
+1. Build the project and install dependencies
+   ```bash
+   mvn install
    ```
 
 1. Run the web app.

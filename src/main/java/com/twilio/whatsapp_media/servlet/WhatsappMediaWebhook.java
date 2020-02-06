@@ -1,83 +1,33 @@
 package com.twilio.whatsapp_media.servlet;
 
-import com.twilio.twiml.MessagingResponse;
-import com.twilio.twiml.messaging.Body;
-import com.twilio.twiml.messaging.Media;
-import com.twilio.twiml.messaging.Message;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
-import org.apache.tika.mime.MimeTypeException;
-import org.apache.tika.mime.MimeTypes;
-import org.json.JSONObject;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
 
+import com.twilio.twiml.MessagingResponse;
+import com.twilio.twiml.messaging.Body;
+import com.twilio.twiml.messaging.Media;
+import com.twilio.twiml.messaging.Message;
 
-@WebServlet(urlPatterns = {"/"})
+@WebServlet(urlPatterns = { "/" })
 public class WhatsappMediaWebhook extends HttpServlet {
-    private static String goodBoyUrl = "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80";
-
-    String FileExtensionForMimeType(String mimeType) {
-        try {
-            return MimeTypes.getDefaultMimeTypes().forName(mimeType).getExtension();
-        } catch (MimeTypeException e) {
-            return null;
-        }
-    }
+    private static final String GOOD_BOY_URL = "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        var body = new JSONObject(IOUtils.toString(request.getReader()));
-        int numMedia = body.getInt("NumMedia");
-
-        if (numMedia > 0) {
-            while (numMedia > 0) {
-                numMedia = numMedia - 1;
-
-                var mediaUrl = body.getString(String.format("MediaUrl%d", numMedia));
-                var contentType = body.getString(String.format("MediaContentType%d", numMedia));
-                var fileName = mediaUrl.substring(mediaUrl.lastIndexOf("/") + 1);
-                var fileExtension = FileExtensionForMimeType(contentType);
-                var file = new File(fileName + fileExtension);
-
-                // Download file
-                try {
-                    downloadFile(mediaUrl, file);
-                } catch (URISyntaxException e) {
-                    throw new ServletException(e);
-                }
-            }
-        }
-
+            throws IOException {
+        var numMedia = Integer.parseInt(request.getParameter("NumMedia"));
         var twimlResponse = new MessagingResponse.Builder();
-
-        if (body.getInt("NumMedia") > 0) {
+        if (numMedia > 0) {
             twimlResponse.message(
-                new Message.Builder()
-                    .body(new Body.Builder("Thanks for the image(s)!").build())
-                    .media(new Media.Builder(goodBoyUrl).build())
-                    .build()
-            );
+                    new Message.Builder().body(new Body.Builder("Thanks for the image! Here's one for you!").build())
+                            .media(new Media.Builder(GOOD_BOY_URL).build()).build());
         } else {
-            twimlResponse.message(
-                new Message.Builder()
-                    .body(new Body.Builder("Send us an image!").build())
-                    .media(new Media.Builder(goodBoyUrl).build())
-                    .build()
-            );
+            twimlResponse.message(new Message.Builder().body(new Body.Builder("Send us an image!").build()).build());
         }
 
         response.setContentType("text/xml");
@@ -89,14 +39,4 @@ public class WhatsappMediaWebhook extends HttpServlet {
         out.close();
     }
 
-    void downloadFile(String mediaUrl, File file) throws URISyntaxException, IOException {
-        var url = new URI(mediaUrl);
-        var httpclient = HttpClients.custom()
-            .setRedirectStrategy(new LaxRedirectStrategy())
-            .build();
-        var get = new HttpGet(url);
-        var downloadResp = httpclient.execute(get);
-        var source = downloadResp.getEntity().getContent();
-        FileUtils.copyInputStreamToFile(source, file);
-    }
 }
