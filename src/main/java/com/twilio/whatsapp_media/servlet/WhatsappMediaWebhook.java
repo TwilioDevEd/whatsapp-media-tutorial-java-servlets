@@ -26,18 +26,9 @@ public class WhatsappMediaWebhook extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        var body = IOUtils.toString(request.getReader());
-        
-        // The request object is in query string format, so we need to decode it
-        final String bodyDecoded = URLDecoder.decode(body, "UTF-8");
-        List<String> parts = Arrays.asList(bodyDecoded.split("&"));
-        String[] numMedia = parts.stream()
-            .filter(s -> s.startsWith("NumMedia"))
-            .findFirst()
-            .orElse(null)
-            .split("=");
+        var numMedia = Integer.parseInt(request.getParameter("NumMedia"));
         var twimlResponse = new MessagingResponse.Builder();
-        if (numMedia[1].equals("1")) {
+        if (numMedia > 0) {
             twimlResponse.message(
                     new Message.Builder().body(new Body.Builder("Thanks for the image! Here's one for you!").build())
                             .media(new Media.Builder(goodBoyUrl).build()).build());
