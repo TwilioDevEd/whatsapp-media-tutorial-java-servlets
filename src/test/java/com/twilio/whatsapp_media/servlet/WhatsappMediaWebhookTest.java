@@ -4,10 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
 
@@ -41,14 +39,11 @@ public class WhatsappMediaWebhookTest {
 
     @Test
     public void handleWebhookRequestWithImages() throws ServletException, IOException, URISyntaxException {
-        // arrange
-        String json =  "SmsMessageSid=SMc30a0ad05a0907df776f103ad8d1bcef&NumMedia=1&SmsSid=SMc30a0ad05a0907df776f103ad8d1bcef&SmsStatus=received&Body=Heu&To=whatsapp%3A%2B11111118886&NumSegments=1&MessageSid=SMc30a0ad05a0907df776f103ad8d1bcef&AccountSid=ACxxxxx&From=whatsapp%3A%2B111111111111&ApiVersion=2010-04-01";
 
         var writer = new StringWriter();
 
         when(response.getWriter()).thenReturn(new PrintWriter(writer));
-        when(request.getReader()).thenReturn(
-            new BufferedReader(new StringReader(json)));
+        when(request.getParameter("NumMedia")).thenReturn("1");
         when(request.getContentType()).thenReturn("*/*");
         when(request.getCharacterEncoding()).thenReturn("UTF-8");
 
@@ -72,14 +67,11 @@ public class WhatsappMediaWebhookTest {
 
     @Test
     public void handleWebhookRequestWithoutImages() throws ServletException, IOException, URISyntaxException {
-        // arrange
-        String json = "SmsMessageSid=SMc30a0ad05a0907df776f103ad8d1bcef&NumMedia=0&SmsSid=SMc30a0ad05a0907df776f103ad8d1bcef&SmsStatus=received&Body=Heu&To=whatsapp%3A%2B11111118886&NumSegments=1&MessageSid=SMc30a0ad05a0907df776f103ad8d1bcef&AccountSid=ACxxxxx&From=whatsapp%3A%2B111111111111&ApiVersion=2010-04-01";
 
         var writer = new StringWriter();
 
         when(response.getWriter()).thenReturn(new PrintWriter(writer));
-        when(request.getReader()).thenReturn(
-            new BufferedReader(new StringReader(json)));
+        when(request.getParameter("NumMedia")).thenReturn("0");
         when(request.getContentType()).thenReturn("*/*");
         when(request.getCharacterEncoding()).thenReturn("UTF-8");
 
