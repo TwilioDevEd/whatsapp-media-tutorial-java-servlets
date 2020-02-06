@@ -2,6 +2,7 @@ package com.twilio.whatsapp_media.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,31 +18,34 @@ import com.twilio.twiml.messaging.Message;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
-
-@WebServlet(urlPatterns = {"/"})
+@WebServlet(urlPatterns = { "/" })
 public class WhatsappMediaWebhook extends HttpServlet {
     private static String goodBoyUrl = "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        var body = new JSONObject(IOUtils.toString(request.getReader()));
-
+        var body = IOUtils.toString(request.getReader());
+        
+        // The request object is in query string format,
+        // so we need to decode it an transform it into a json
+        final String bodyDecoded = URLDecoder.decode(body, "UTF-8");
+        String[] parts = bodyDecoded.split("&");
+        JSONObject json = new JSONObject();
+        for (String part : parts) {
+            String[] keyVal = part.split("=");
+            if (keyVal.length == 2) {
+                json.put(keyVal[0], keyVal[1]);
+            }
+        }
         var twimlResponse = new MessagingResponse.Builder();
 
-        if (body.getInt("NumMedia") > 0) {
+        if (json.getInt("NumMedia") > 0) {
             twimlResponse.message(
-                new Message.Builder()
-                    .body(new Body.Builder("Thanks for the image! Here's one for you!").build())
-                    .media(new Media.Builder(goodBoyUrl).build())
-                    .build()
-            );
+                    new Message.Builder().body(new Body.Builder("Thanks for the image! Here's one for you!").build())
+                            .media(new Media.Builder(goodBoyUrl).build()).build());
         } else {
-            twimlResponse.message(
-                new Message.Builder()
-                    .body(new Body.Builder("Send us an image!").build())
-                    .build()
-            );
+            twimlResponse.message(new Message.Builder().body(new Body.Builder("Send us an image!").build()).build());
         }
 
         response.setContentType("text/xml");

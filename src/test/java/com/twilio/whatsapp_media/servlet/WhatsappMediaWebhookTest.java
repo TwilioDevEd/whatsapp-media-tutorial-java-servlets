@@ -42,21 +42,7 @@ public class WhatsappMediaWebhookTest {
     @Test
     public void handleWebhookRequestWithImages() throws ServletException, IOException, URISyntaxException {
         // arrange
-        String json =  "{\n" +
-            "  \"MediaContentType0\": \"image/jpeg\",\n" +
-            "  \"SmsMessageSid\": \"MM19df5a6293470c5e309890648740986a\",\n" +
-            "  \"NumMedia\": \"1\",\n" +
-            "  \"SmsSid\": \"MM19df5a6293470c5e309890648740986a\",\n" +
-            "  \"SmsStatus\": \"received\",\n" +
-            "  \"Body\": \"\",\n" +
-            "  \"To\": \"whatsapp:+14155238886\",\n" +
-            "  \"NumSegments\": \"1\",\n" +
-            "  \"MessageSid\": \"MM19df5a6293470c5e309890648740986a\",\n" +
-            "  \"AccountSid\": \"AC4ee8a4bf66c95837fc46316395718baa\",\n" +
-            "  \"From\": \"whatsapp:+5213321678083\",\n" +
-            "  \"MediaUrl0\": \"https://api.twilio.com/2010-04-01/Accounts/AC4ee8a4bf66c95837fc46316395718baa/Messages/MM19df5a6293470c5e309890648740986a/Media/ME456a12de2891e2a69bc11a23aab6b9c5\",\n" +
-            "  \"ApiVersion\": \"2010-04-01\"\n" +
-            "}";
+        String json =  "SmsMessageSid=SMc30a0ad05a0907df776f103ad8d1bcef&NumMedia=1&SmsSid=SMc30a0ad05a0907df776f103ad8d1bcef&SmsStatus=received&Body=Heu&To=whatsapp%3A%2B11111118886&NumSegments=1&MessageSid=SMc30a0ad05a0907df776f103ad8d1bcef&AccountSid=ACxxxxx&From=whatsapp%3A%2B111111111111&ApiVersion=2010-04-01";
 
         var writer = new StringWriter();
 
@@ -87,19 +73,7 @@ public class WhatsappMediaWebhookTest {
     @Test
     public void handleWebhookRequestWithoutImages() throws ServletException, IOException, URISyntaxException {
         // arrange
-        String json =  "{\n" +
-            "  \"SmsMessageSid\": \"MM19df5a6293470c5e309890648740986a\",\n" +
-            "  \"NumMedia\": \"0\",\n" +
-            "  \"SmsSid\": \"MM19df5a6293470c5e309890648740986a\",\n" +
-            "  \"SmsStatus\": \"received\",\n" +
-            "  \"Body\": \"\",\n" +
-            "  \"To\": \"whatsapp:+14155238886\",\n" +
-            "  \"NumSegments\": \"1\",\n" +
-            "  \"MessageSid\": \"MM19df5a6293470c5e309890648740986a\",\n" +
-            "  \"AccountSid\": \"AC4ee8a4bf66c95837fc46316395718baa\",\n" +
-            "  \"From\": \"whatsapp:+5213321678083\",\n" +
-            "  \"ApiVersion\": \"2010-04-01\"\n" +
-            "}";
+        String json = "SmsMessageSid=SMc30a0ad05a0907df776f103ad8d1bcef&NumMedia=0&SmsSid=SMc30a0ad05a0907df776f103ad8d1bcef&SmsStatus=received&Body=Heu&To=whatsapp%3A%2B11111118886&NumSegments=1&MessageSid=SMc30a0ad05a0907df776f103ad8d1bcef&AccountSid=ACxxxxx&From=whatsapp%3A%2B111111111111&ApiVersion=2010-04-01";
 
         var writer = new StringWriter();
 
