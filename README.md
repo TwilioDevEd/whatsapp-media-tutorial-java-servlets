@@ -7,7 +7,7 @@ Use Twilio to receive WhatsApp media messages. For a step-by-step tutorial see
 the [Twilio docs](https://www.twilio.com/docs/sms/whatsapp/tutorial/send-and-receive-media-messages-whatsapp-java-servlets).
 
 
-[![Build Status](https://travis-ci.org/TwilioDevEd/whatsapp-media-tutorial-java-servlets.svg?branch=master)](https://travis-ci.org/TwilioDevEd/whatsapp-media-tutorial-java-servlets)
+[![Java Servlet CI](https://github.com/TwilioDevEd/whatsapp-media-tutorial-java-servlets/actions/workflows/maven.yml/badge.svg)](https://github.com/TwilioDevEd/whatsapp-media-tutorial-java-servlets/actions/workflows/maven.yml)
 
 ## Local development
 
